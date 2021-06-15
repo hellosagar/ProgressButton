@@ -46,11 +46,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnEnable.setOnClickListener {
-            progressButton.isEnabled(true)
+            progressButton.enable()
         }
 
         btnDisable.setOnClickListener {
-            progressButton.isEnabled(false)
+            progressButton.disable()
         }
 
         btnReset.setOnClickListener {

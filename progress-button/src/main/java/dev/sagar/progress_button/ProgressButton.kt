@@ -1,12 +1,15 @@
 package dev.sagar.progress_button
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.AttributeSet
+import android.util.Log
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
@@ -15,6 +18,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
+import dev.sagar.progress_button.DefaultParams.CORNER_RADIUS
+import dev.sagar.progress_button.DefaultParams.ELEVATION
+import dev.sagar.progress_button.DefaultParams.TITLE_TEXT
+import dev.sagar.progress_button.DefaultParams.FINISHED_TEXT
+import dev.sagar.progress_button.DefaultParams.IS_VIBRATION_ENABLED
+import dev.sagar.progress_button.DefaultParams.STROKE_COLOR
+import dev.sagar.progress_button.DefaultParams.STROKE_WIDTH
+import dev.sagar.progress_button.DefaultParams.TEXT_COLOR
+import dev.sagar.progress_button.DefaultParams.TEXT_SIZE
+import dev.sagar.progress_button.DefaultParams.VIBRATION_TIME
 
 @SuppressLint("ClickableViewAccessibility")
 class ProgressButton @JvmOverloads constructor(
@@ -23,51 +36,38 @@ class ProgressButton @JvmOverloads constructor(
     defStyle: Int = 0,
 ) : MaterialCardView(context, attributeSet, defStyle) {
 
-    /** Core Items */
-    private var attrs: AttributeSet? = null
-    private var styleAttr = 0
-    private var view: View? = null
+    val TAG = "ProgressButton"
 
     /** Core Components */
-    private lateinit var cardView: MaterialCardView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var textView: TextView
-    private lateinit var scaleUp: Animation
-    private lateinit var scaleDown: Animation
-    private lateinit var vibrator: Vibrator
+    private var cardView: MaterialCardView = this
+    private var progressBar: ProgressBar
+    private var textView: TextView
+    private var scaleUp: Animation
+    private var scaleDown: Animation
+    private var vibrator: Vibrator
     private var disableViews: List<View> = mutableListOf()
 
-
     /** Attributes  */
-    private var defaultText: String = "Login"
-    private var finishText: String = "Finish"
-    private var defaultColor: Int = 0
-    private var pressedColor: Int = 0
-    private var disabledColor: Int = 0
-    private var finishedColor: Int = 0
-    private var btnStrokeColor: Int = Color.TRANSPARENT
-    private var btnStrokeWidth: Int = 0
-    private var btnCornerRadius: Float = 10.0F
-    private var btnElevation: Float = 0.0F
-    private var btnTextSize: Float = 0F
-    private var btnTextColor: Int = Color.WHITE
-    private var isVibrationEnabled: Boolean = false
-    private var vibrationMillisecond: Long = 30L
+    private var defaultText: String
+    private var finishText: String
+    private var defaultColor: Int
+    private var pressedColor: Int
+    private var disabledColor: Int
+    private var finishedColor: Int
+    private var btnStrokeColor: Int
+    private var btnStrokeWidth: Int
+    private var btnCornerRadius: Float
+    private var btnElevation: Float
+    private var btnTextSize: Float
+    private var btnTextColor: Int
+    private var isVibrationEnabled: Boolean
+    private var vibrationMillisecond: Long
 
     init {
-        this.attrs = attributeSet
-        this.styleAttr = defStyle
-        initView()
-    }
-
-
-    private fun initView() {
-        cardView = this
-        view = this
         inflate(context, R.layout.progress_button_view, this)
-        val arr = context.obtainStyledAttributes(
-            attrs, R.styleable.ProgressButton,
-            styleAttr, 0
+        val customAttributes = context.obtainStyledAttributes(
+            attributeSet, R.styleable.ProgressButton,
+            defStyle, 0
         )
 
         textView = findViewById(R.id.tvProgressTitle)
@@ -76,100 +76,97 @@ class ProgressButton @JvmOverloads constructor(
         scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up)
         vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-        defaultText = arr.getString(R.styleable.ProgressButton_default_text) ?: "Login"
-        finishText = arr.getString(R.styleable.ProgressButton_finish_text) ?: "Finish"
-        btnCornerRadius = arr.getDimension(R.styleable.ProgressButton_corner_radius, 10.0F)
-        btnElevation = arr.getDimension(R.styleable.ProgressButton_btn_elevation, 0.0F)
-        defaultColor = arr.getColor(
-            R.styleable.ProgressButton_default_color, ContextCompat.getColor(
-                cardView.context,
-                R.color.blue_500
+        customAttributes.apply {
+            defaultText = getString(R.styleable.ProgressButton_default_text) ?: TITLE_TEXT
+            finishText = getString(R.styleable.ProgressButton_finish_text) ?: FINISHED_TEXT
+            btnCornerRadius = getDimension(R.styleable.ProgressButton_corner_radius, CORNER_RADIUS)
+            btnElevation = getDimension(R.styleable.ProgressButton_btn_elevation, ELEVATION)
+            defaultColor = getColor(
+                R.styleable.ProgressButton_default_color, ContextCompat.getColor(
+                    context,
+                    R.color.blue_500
+                )
             )
-        )
-        pressedColor = arr.getColor(
-            R.styleable.ProgressButton_pressed_color, ContextCompat.getColor(
-                cardView.context,
-                R.color.blue_700
+            pressedColor = getColor(
+                R.styleable.ProgressButton_pressed_color, ContextCompat.getColor(
+                    context,
+                    R.color.blue_700
+                )
             )
-        )
-        disabledColor = arr.getColor(
-            R.styleable.ProgressButton_disabled_color, ContextCompat.getColor(
-                cardView.context,
-                R.color.blue_200
+            disabledColor = getColor(
+                R.styleable.ProgressButton_disabled_color, ContextCompat.getColor(
+                    context,
+                    R.color.blue_200
+                )
             )
-        )
-        finishedColor = arr.getColor(
-            R.styleable.ProgressButton_finished_color, ContextCompat.getColor(
-                cardView.context,
-                R.color.green_500
+            finishedColor = getColor(
+                R.styleable.ProgressButton_finished_color, ContextCompat.getColor(
+                    context,
+                    R.color.green_500
+                )
             )
-        )
-        btnStrokeColor = arr.getColor(
-            R.styleable.ProgressButton_stroke_color, Color.TRANSPARENT
-        )
-        btnStrokeWidth = arr.getDimension(
-            R.styleable.ProgressButton_stroke_width, 0F
-        ).toInt()
+            btnStrokeColor = getColor(
+                R.styleable.ProgressButton_stroke_color, STROKE_COLOR
+            )
+            btnStrokeWidth = getDimension(
+                R.styleable.ProgressButton_stroke_width, STROKE_WIDTH
+            ).toInt()
 
-        btnTextSize = arr.getDimension(
-            R.styleable.ProgressButton_btn_text_size, 16F
-        )
+            btnTextSize = getDimension(
+                R.styleable.ProgressButton_btn_text_size, TEXT_SIZE
+            )
 
-        btnTextColor = arr.getColor(
-            R.styleable.ProgressButton_btn_text_color, Color.WHITE
-        )
+            btnTextColor = getColor(
+                R.styleable.ProgressButton_btn_text_color, TEXT_COLOR
+            )
 
-        isVibrationEnabled = arr.getBoolean(
-            R.styleable.ProgressButton_is_vibrate, false
-        )
+            isVibrationEnabled = getBoolean(
+                R.styleable.ProgressButton_is_vibrate, IS_VIBRATION_ENABLED
+            )
 
-        vibrationMillisecond = arr.getInt(
-            R.styleable.ProgressButton_vibration_millisecond, 30
-        ).toLong()
+            vibrationMillisecond = getInt(
+                R.styleable.ProgressButton_vibration_millisecond, VIBRATION_TIME
+            ).toLong()
+        }
 
-
+        // Set Text attributes
+        setFinishedText(finishText)
+        setDefaultText(defaultText)
         setBtnTextSize(btnTextSize)
         setBtnTextColor(btnTextColor)
+        setBtnText(defaultText)
 
+        // set cardview color states
         cardView.setCardBackgroundColor(defaultColor)
-
-        setDefaultText(defaultText)
-
-        setFinishedText(finishText)
-
         setDefaultColor(defaultColor)
-
         setPressedColor(pressedColor)
-
         setDisabledColor(disabledColor)
-
         setFinishedColor(finishedColor)
 
-        setPressedColor(pressedColor)
-
+        // set stroke attributes
         setBtnStrokeColor(btnStrokeColor)
-
         setBtnStrokeWidth(btnStrokeWidth)
 
+        // set card attributes
         setCornerRadius(btnCornerRadius)
-
         setButtonElevation(btnElevation)
 
-        this.setOnTouchListener { view, event ->
+        // change color with gesture i.e action up and down
+        setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     cardView.startAnimation(scaleDown)
-                    changeColorOnActionDown(false)
+                    changeColorOnActionDown()
                 }
                 MotionEvent.ACTION_UP -> {
                     cardView.startAnimation(scaleUp)
-                    changeColorOnActionUp(false)
+                    changeColorOnActionUp()
                 }
             }
             false
         }
 
-        arr.recycle()
+        customAttributes.recycle()
     }
 
     /**
@@ -177,7 +174,13 @@ class ProgressButton @JvmOverloads constructor(
      */
     fun setOnClickListener(listener: () -> Unit) {
         cardView.setOnClickListener {
-            if (isVibrationEnabled) vibrateClick()
+            if (isVibrationEnabled){
+                if ((ContextCompat.checkSelfPermission(context, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) ){
+                    vibrateOnClick()
+                }else{
+                    Log.w(TAG,"Please add vibration permission in your manifest, if you want to use vibration and don't tell us that we didn't remind you ^_^")
+                }
+            }
             listener.invoke()
         }
     }
@@ -185,77 +188,77 @@ class ProgressButton @JvmOverloads constructor(
     /**
      * Enable Vibration
      */
-    private fun enableVibration() {
+    fun enableVibration() {
         isVibrationEnabled = true
     }
 
     /**
      * Disable Vibration
      */
-    private fun disableVibration() {
+    fun disableVibration() {
         isVibrationEnabled = false
     }
 
     /**
-     * set vibration time in millisecond
+     * Set vibration time in millisecond
      */
-    private fun setVibrationTimeInMillisecond(time: Long) {
+    fun setVibrationTimeInMillisecond(time: Long) {
         vibrationMillisecond = time
     }
 
     /**
      * Set text color
      */
-    private fun setBtnTextColor(color: Int) {
+    fun setBtnTextColor(color: Int) {
         textView.setTextColor(color)
     }
 
     /**
      * Set text size
      */
-    private fun setBtnTextSize(textSize: Float) {
-        textView.textSize = textSize
+    fun setBtnTextSize(textSize: Float) {
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
     }
 
     /**
      * Set finished text to button
      */
-    private fun setFinishedText(text: String) {
+    fun setFinishedText(text: String) {
         finishText = text
     }
 
     /**
      * Set default button color
      */
-    private fun setDefaultColor(color: Int) {
+    fun setDefaultColor(color: Int) {
         defaultColor = color
     }
 
     /**
      * Set default button color
      */
-    private fun setDisabledColor(color: Int) {
+    fun setDisabledColor(color: Int) {
         disabledColor = color
     }
 
     /**
      * Set pressed button color
      */
-    private fun setPressedColor(color: Int) {
+    fun setPressedColor(color: Int) {
         pressedColor = color
     }
 
     /**
      * Set finished button color
      */
-    private fun setFinishedColor(color: Int) {
+    fun setFinishedColor(color: Int) {
         finishedColor = color
     }
 
     /**
      * Set stroke color
      */
-    private fun setBtnStrokeColor(color: Int) {
+    fun setBtnStrokeColor(color: Int) {
         btnStrokeColor = color
         cardView.strokeColor = btnStrokeColor
     }
@@ -263,7 +266,7 @@ class ProgressButton @JvmOverloads constructor(
     /**
      * Set stroke width
      */
-    private fun setBtnStrokeWidth(width: Int) {
+    fun setBtnStrokeWidth(width: Int) {
         btnStrokeWidth = width
         cardView.strokeWidth = btnStrokeWidth
     }
@@ -271,7 +274,7 @@ class ProgressButton @JvmOverloads constructor(
     /**
      * Set Corner radius of button
      */
-    private fun setCornerRadius(radius: Float) {
+    fun setCornerRadius(radius: Float) {
         btnCornerRadius = radius
         cardView.radius = radius
     }
@@ -279,19 +282,30 @@ class ProgressButton @JvmOverloads constructor(
     /**
      * Set button elevation
      */
-    private fun setButtonElevation(elevation: Float) {
+    fun setButtonElevation(elevation: Float) {
         btnElevation = elevation
         cardView.elevation = btnElevation
     }
 
     /**
+     * Set default text
+     */
+    fun setDefaultText(text: String) {
+        defaultText = text
+    }
+
+    /**
      * Set text to button
      */
-    private fun setDefaultText(title: String?) {
+    private fun setBtnText(title: String) {
         textView.text = title
     }
 
-    private fun vibrateClick() {
+    /**
+     * Vibrate the device with the following vibrate time in millisecond
+     */
+    @SuppressLint("MissingPermission")
+    private fun vibrateOnClick() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(
                 VibrationEffect.createOneShot(
@@ -306,24 +320,34 @@ class ProgressButton @JvmOverloads constructor(
     }
 
     /**
-     * Disable/Enable button
+     * Enable button
      */
-    fun isEnabled(isEnabled: Boolean) {
-        if (isEnabled) {
-            cardView.setCardBackgroundColor(
-                defaultColor
-            )
-        } else {
-            cardView.setCardBackgroundColor(
-                disabledColor
-            )
-        }
+    fun enable() {
+        cardView.setCardBackgroundColor(
+            defaultColor
+        )
         textView.text = defaultText
         cardView.isEnabled = isEnabled
         progressBar.gone()
         textView.visible()
     }
 
+    /**
+     * Disable button
+     */
+    fun disable() {
+        cardView.setCardBackgroundColor(
+            disabledColor
+        )
+        textView.text = defaultText
+        cardView.isEnabled = isEnabled
+        progressBar.gone()
+        textView.visible()
+    }
+
+    /**
+     * Setting list of view that will disable in active state of button
+     */
     fun setDisableViews(views: List<View>) {
         disableViews = views
     }
@@ -332,15 +356,15 @@ class ProgressButton @JvmOverloads constructor(
      * Set the button state to activate for loading purpose
      */
     fun activate() {
+        for (editText in disableViews) {
+            editText.isEnabled = false
+        }
+
         cardView.setCardBackgroundColor(
             disabledColor
         )
         textView.invisible()
         progressBar.visible()
-
-        for (editText in disableViews) {
-            editText.isEnabled = false
-        }
 
         cardView.isEnabled = false
     }
@@ -379,39 +403,21 @@ class ProgressButton @JvmOverloads constructor(
     }
 
     /**
-     * Change card background color w.r.t inverseColor on action down
+     * Set pressed color on card background color on action down
      */
-    private fun changeColorOnActionDown(inverseColor: Boolean) {
-        if (inverseColor) {
-            cardView.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    cardView.context,
-                    R.color.gray_200
-                )
-            )
-        } else {
-            cardView.setCardBackgroundColor(
-                pressedColor
-            )
-        }
+    private fun changeColorOnActionDown() {
+        cardView.setCardBackgroundColor(
+            pressedColor
+        )
     }
 
     /**
-     * Change card background color w.r.t inverseColor on action up
+     * Set default color on card background color on action up
      */
-    private fun changeColorOnActionUp(inverseColor: Boolean) {
-        if (inverseColor) {
-            cardView.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    cardView.context,
-                    R.color.white
-                )
-            )
-        } else {
-            cardView.setCardBackgroundColor(
-                defaultColor
-            )
-        }
+    private fun changeColorOnActionUp() {
+        cardView.setCardBackgroundColor(
+            defaultColor
+        )
     }
 
 }
