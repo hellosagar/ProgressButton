@@ -1,0 +1,3 @@
+rootProject.name = "ProgressButton"
+include ':app'
+include ':progress-button'
