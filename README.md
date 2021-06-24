@@ -69,10 +69,8 @@ Here is the sample code
 ```xml
 <dev.sagar.progress_button.ProgressButton
         android:id="@+id/button"
-        android:layout_width="0dp"
+        android:layout_width="240dp"
         android:layout_height="54dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         app:btn_elevation="12dp"
         app:corner_radius="12dp"
         app:default_text="YOOYOOYOYOYO"
@@ -80,10 +78,6 @@ Here is the sample code
         app:finish_text="Im done"
         app:is_vibrate="false"
         app:finished_color="@color/gray_700"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_id_input_layout_login"
         app:pressed_color="@color/black_500"
         app:stroke_color="@android:color/holo_orange_dark"
         app:stroke_width="3dp" />
