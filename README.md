@@ -50,7 +50,7 @@ repositories {
 }  
   
 dependencies {  
- implementation 'com.github.hellosagar:ProgressButton:0.1'
+ implementation 'com.github.hellosagar:ProgressButton:0.3'
 }  
 ```
 
