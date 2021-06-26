@@ -31,7 +31,6 @@ import dev.sagar.progress_button.DefaultParams.TEXT_SIZE
 import dev.sagar.progress_button.DefaultParams.TITLE_TEXT
 import dev.sagar.progress_button.DefaultParams.VIBRATION_TIME
 
-
 @SuppressLint("ClickableViewAccessibility")
 class ProgressButton @JvmOverloads constructor(
     context: Context,
@@ -39,7 +38,7 @@ class ProgressButton @JvmOverloads constructor(
     defStyle: Int = 0,
 ) : MaterialCardView(context, attributeSet, defStyle) {
 
-    val TAG = "ProgressButton"
+    private val TAG = "ProgressButton"
 
     /** Core Components */
     private var cardView: MaterialCardView = this
@@ -47,7 +46,7 @@ class ProgressButton @JvmOverloads constructor(
     private var textView: TextView
     private var scaleUp: Animation
     private var scaleDown: Animation
-    private var vibrator: Vibrator
+    private var vibrator: Vibrator? = null
     private var disableViews: List<View> = mutableListOf()
 
     /** Attributes  */
@@ -78,7 +77,6 @@ class ProgressButton @JvmOverloads constructor(
         progressBar = findViewById(R.id.progressBar)
         scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
         scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up)
-        vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         customAttributes.apply {
             defaultText = getString(R.styleable.ProgressButton_default_text) ?: TITLE_TEXT
@@ -183,11 +181,18 @@ class ProgressButton @JvmOverloads constructor(
      */
     fun setOnClickListener(listener: () -> Unit) {
         cardView.setOnClickListener {
-            if (isVibrationEnabled){
-                if ((ContextCompat.checkSelfPermission(context, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) ){
+            if (isVibrationEnabled) {
+                if ((ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.VIBRATE
+                    ) == PackageManager.PERMISSION_GRANTED)
+                ) {
                     vibrateOnClick()
-                }else{
-                    Log.w(TAG,"Please add vibration permission in your manifest, if you want to use vibration and don't tell us that we didn't remind you ^_^")
+                } else {
+                    Log.w(
+                        TAG,
+                        "Please add vibration permission in your manifest, if you want to use vibration and don't tell us that we didn't remind you ^_^"
+                    )
                 }
             }
             listener.invoke()
@@ -322,8 +327,13 @@ class ProgressButton @JvmOverloads constructor(
      */
     @SuppressLint("MissingPermission")
     private fun vibrateOnClick() {
+
+        if (vibrator == null)
+            vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(
+            vibrator?.vibrate(
                 VibrationEffect.createOneShot(
                     vibrationMillisecond,
                     VibrationEffect.DEFAULT_AMPLITUDE
@@ -331,7 +341,7 @@ class ProgressButton @JvmOverloads constructor(
             )
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(30)
+            vibrator?.vibrate(30)
         }
     }
 
