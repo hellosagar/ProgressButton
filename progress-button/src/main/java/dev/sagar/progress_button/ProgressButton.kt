@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -20,14 +21,16 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import dev.sagar.progress_button.DefaultParams.CORNER_RADIUS
 import dev.sagar.progress_button.DefaultParams.ELEVATION
-import dev.sagar.progress_button.DefaultParams.TITLE_TEXT
 import dev.sagar.progress_button.DefaultParams.FINISHED_TEXT
 import dev.sagar.progress_button.DefaultParams.IS_VIBRATION_ENABLED
+import dev.sagar.progress_button.DefaultParams.RIPPLE_COLOR
 import dev.sagar.progress_button.DefaultParams.STROKE_COLOR
 import dev.sagar.progress_button.DefaultParams.STROKE_WIDTH
 import dev.sagar.progress_button.DefaultParams.TEXT_COLOR
 import dev.sagar.progress_button.DefaultParams.TEXT_SIZE
+import dev.sagar.progress_button.DefaultParams.TITLE_TEXT
 import dev.sagar.progress_button.DefaultParams.VIBRATION_TIME
+
 
 @SuppressLint("ClickableViewAccessibility")
 class ProgressButton @JvmOverloads constructor(
@@ -62,6 +65,7 @@ class ProgressButton @JvmOverloads constructor(
     private var btnTextColor: Int
     private var isVibrationEnabled: Boolean
     private var vibrationMillisecond: Long
+    private var rippleColor: Int
 
     init {
         inflate(context, R.layout.progress_button_view, this)
@@ -127,6 +131,10 @@ class ProgressButton @JvmOverloads constructor(
             vibrationMillisecond = getInt(
                 R.styleable.ProgressButton_vibration_millisecond, VIBRATION_TIME
             ).toLong()
+
+            rippleColor = getColor(
+                R.styleable.ProgressButton_ripple_color, RIPPLE_COLOR
+            )
         }
 
         // Set Text attributes
@@ -150,6 +158,7 @@ class ProgressButton @JvmOverloads constructor(
         // set card attributes
         setCornerRadius(btnCornerRadius)
         setButtonElevation(btnElevation)
+        setRippleColor(rippleColor)
 
         // change color with gesture i.e action up and down
         setOnTouchListener { _, event ->
@@ -183,6 +192,13 @@ class ProgressButton @JvmOverloads constructor(
             }
             listener.invoke()
         }
+    }
+
+    /**
+     * Set ripple color
+     */
+    fun setRippleColor(color: Int) {
+        cardView.rippleColor = ColorStateList.valueOf(color)
     }
 
     /**

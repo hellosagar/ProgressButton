@@ -3,12 +3,9 @@ package dev.sagar.progressbutton
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import dev.sagar.progress_button.ProgressButton
 import dev.sagar.progressbutton.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var progressButton: ProgressButton
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,14 +13,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        progressButton = findViewById(R.id.button)
-
         initViews()
         initClickListeners()
     }
 
     private fun initViews() = binding.apply {
-
+        // Passing list of view that we want them to be disabled during the active state
         progressButton.setDisableViews(listOf(
             editTextTextPersonName,
             editTextTextPersonName2,
@@ -38,22 +33,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnActivate.setOnClickListener {
+            // Activate state
             progressButton.activate()
         }
 
         btnFinish.setOnClickListener {
+            // Finish state
             progressButton.finished()
         }
 
         btnEnable.setOnClickListener {
+            // Enable state
             progressButton.enable()
         }
 
         btnDisable.setOnClickListener {
+            // Enable state
             progressButton.disable()
         }
 
         btnReset.setOnClickListener {
+            // Reset state
             progressButton.reset()
         }
 

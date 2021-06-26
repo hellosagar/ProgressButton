@@ -3,19 +3,19 @@
     <declare-styleable name="ProgressButton">
         <attr name="btn_text_size" format="dimension"/>
         <attr name="btn_text_color" format="color"/>
+        <attr name="default_text" format="string"/>
+        <attr name="finish_text" format="string"/>
 
         <attr name="is_vibrate" format="boolean"/>
         <attr name="vibration_millisecond" format="integer"/>
 
-        <attr name="default_text" format="string"/>
-
-        <attr name="finish_text" format="string"/>
+        <attr name="ripple_color" format="color"/>
         <attr name="default_color" format="color"/>
         <attr name="pressed_color" format="color"/>
         <attr name="disabled_color" format="color"/>
         <attr name="finished_color" format="color"/>
-
         <attr name="stroke_color" format="color"/>
+
         <attr name="stroke_width" format="dimension"/>
         <attr name="corner_radius" format="dimension"/>
         <attr name="btn_elevation" format="dimension"/>

@@ -20,4 +20,6 @@ object DefaultParams {
     const val IS_VIBRATION_ENABLED = false
     const val VIBRATION_TIME = 30
 
+    const val RIPPLE_COLOR = Color.TRANSPARENT
+
 }
