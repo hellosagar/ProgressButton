@@ -349,6 +349,9 @@ class ProgressButton @JvmOverloads constructor(
      * Enable button
      */
     fun enable() {
+        for (editText in disableViews) {
+            editText.isEnabled = true
+        }
         cardView.setCardBackgroundColor(
             defaultColor
         )
