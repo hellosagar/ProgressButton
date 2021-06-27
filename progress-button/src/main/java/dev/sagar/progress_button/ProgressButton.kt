@@ -353,7 +353,7 @@ class ProgressButton @JvmOverloads constructor(
             defaultColor
         )
         textView.text = defaultText
-        cardView.isEnabled = isEnabled
+        cardView.isEnabled = true
         progressBar.gone()
         textView.visible()
     }
@@ -366,7 +366,7 @@ class ProgressButton @JvmOverloads constructor(
             disabledColor
         )
         textView.text = defaultText
-        cardView.isEnabled = isEnabled
+        cardView.isEnabled = false
         progressBar.gone()
         textView.visible()
     }
