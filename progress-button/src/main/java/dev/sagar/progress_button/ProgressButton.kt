@@ -18,6 +18,8 @@ import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.google.android.material.card.MaterialCardView
 import dev.sagar.progress_button.DefaultParams.CORNER_RADIUS
 import dev.sagar.progress_button.DefaultParams.ELEVATION
@@ -66,13 +68,22 @@ class ProgressButton @JvmOverloads constructor(
     private var vibrationMillisecond: Long
     private var rippleColor: Int
 
+
+    //liveData for button states
+    private var buttonStatesLiveData: LiveData<ButtonStates>? = null
+
+    //observer for button state livedata
+    private var buttonStateObserver = Observer<ButtonStates> {
+
+    }
+
+
     init {
         inflate(context, R.layout.progress_button_view, this)
         val customAttributes = context.obtainStyledAttributes(
             attributeSet, R.styleable.ProgressButton,
             defStyle, 0
         )
-
         textView = findViewById(R.id.tvProgressTitle)
         progressBar = findViewById(R.id.progressBar)
         scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
@@ -174,6 +185,8 @@ class ProgressButton @JvmOverloads constructor(
         }
 
         customAttributes.recycle()
+
+        setupForLiveData()
     }
 
     /**
@@ -448,5 +461,51 @@ class ProgressButton @JvmOverloads constructor(
             defaultColor
         )
     }
+
+
+    /**
+     * This function does the initial setup of livedata and its observer
+     */
+    private fun setupForLiveData() {
+        buttonStatesLiveData = null
+        buttonStateObserver = Observer<ButtonStates> {
+            when (it) {
+                ButtonStates.LOADING -> activate()
+                ButtonStates.ENABLED -> enable()
+                ButtonStates.DISABLED -> disable()
+                ButtonStates.FINISHED -> finished()
+                else -> reset()
+            }
+        }
+
+    }
+
+    /**
+     * Attach livedata to the button to directly observe changes in button states .
+     * Helps when u have a livedata in your viewModel and you want to update button state
+     * according to the livedata
+     */
+
+    fun attachToLiveData(state: LiveData<ButtonStates>) {
+        buttonStatesLiveData = state
+        buttonStatesLiveData?.observeForever(buttonStateObserver)
+    }
+
+    /**
+     * Detach the livedata attached to the button
+     */
+
+    fun detachFromLiveData() {
+        buttonStatesLiveData?.removeObserver(buttonStateObserver)
+        buttonStatesLiveData = null
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        //remove the observer as soon as the view is destroyed to avoid memory leaks
+        detachFromLiveData()
+    }
+
 
 }
