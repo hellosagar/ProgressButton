@@ -10,3 +10,5 @@ updates:
       directory: "/"
       schedule:
         interval: "daily"
+      reviewers:
+      - "hellosagar"
