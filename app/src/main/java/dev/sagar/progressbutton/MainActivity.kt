@@ -3,6 +3,7 @@ package dev.sagar.progressbutton
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import dev.sagar.progress_button.ButtonStates
 import dev.sagar.progressbutton.databinding.ActivityMainBinding
@@ -12,8 +13,7 @@ import kotlinx.coroutines.delay
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-
-    val sampleLiveData = liveData(Dispatchers.IO) {
+    private val sampleLiveData: LiveData<ButtonStates> = liveData(Dispatchers.IO) {
         emit(ButtonStates.DISABLED)
         delay(5000L)
         emit(ButtonStates.ENABLED)
@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         delay(5000L)
         emit(ButtonStates.ENABLED)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +36,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() = binding.apply {
         // Passing list of view that we want them to be disabled during the active state
-        progressButton.setDisableViews(listOf(
-            editTextTextPersonName,
-            editTextTextPersonName2,
-        ))
-
+        progressButton.setDisableViews(
+            listOf(
+                editTextTextPersonName,
+                editTextTextPersonName2,
+            )
+        )
     }
 
     private fun initClickListeners() = binding.apply {
@@ -75,9 +75,6 @@ class MainActivity : AppCompatActivity() {
             progressButton.reset()
         }
 
-
-        progressButton.attachToLiveData(sampleLiveData)
-
+        progressButton.attachToLiveData(sampleLiveData, this@MainActivity)
     }
-
 }

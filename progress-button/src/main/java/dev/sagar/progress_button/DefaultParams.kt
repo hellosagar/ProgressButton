@@ -2,7 +2,6 @@ package dev.sagar.progress_button
 
 import android.graphics.Color
 
-
 object DefaultParams {
 
     const val TITLE_TEXT = "Button"
@@ -21,5 +20,4 @@ object DefaultParams {
     const val VIBRATION_TIME = 30
 
     const val RIPPLE_COLOR = Color.TRANSPARENT
-
 }

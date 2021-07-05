@@ -18,8 +18,8 @@ import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.google.android.material.card.MaterialCardView
 import dev.sagar.progress_button.DefaultParams.CORNER_RADIUS
 import dev.sagar.progress_button.DefaultParams.ELEVATION
@@ -68,15 +68,10 @@ class ProgressButton @JvmOverloads constructor(
     private var vibrationMillisecond: Long
     private var rippleColor: Int
 
-
-    //liveData for button states
+    // liveData for button states
     private var buttonStatesLiveData: LiveData<ButtonStates>? = null
 
-    //observer for button state livedata
-    private var buttonStateObserver = Observer<ButtonStates> {
-
-    }
-
+    private var currentState = ButtonStates.ENABLED
 
     init {
         inflate(context, R.layout.progress_button_view, this)
@@ -95,25 +90,29 @@ class ProgressButton @JvmOverloads constructor(
             btnCornerRadius = getDimension(R.styleable.ProgressButton_corner_radius, CORNER_RADIUS)
             btnElevation = getDimension(R.styleable.ProgressButton_btn_elevation, ELEVATION)
             defaultColor = getColor(
-                R.styleable.ProgressButton_default_color, ContextCompat.getColor(
+                R.styleable.ProgressButton_default_color,
+                ContextCompat.getColor(
                     context,
                     R.color.blue_500
                 )
             )
             pressedColor = getColor(
-                R.styleable.ProgressButton_pressed_color, ContextCompat.getColor(
+                R.styleable.ProgressButton_pressed_color,
+                ContextCompat.getColor(
                     context,
                     R.color.blue_700
                 )
             )
             disabledColor = getColor(
-                R.styleable.ProgressButton_disabled_color, ContextCompat.getColor(
+                R.styleable.ProgressButton_disabled_color,
+                ContextCompat.getColor(
                     context,
                     R.color.blue_200
                 )
             )
             finishedColor = getColor(
-                R.styleable.ProgressButton_finished_color, ContextCompat.getColor(
+                R.styleable.ProgressButton_finished_color,
+                ContextCompat.getColor(
                     context,
                     R.color.green_500
                 )
@@ -185,8 +184,6 @@ class ProgressButton @JvmOverloads constructor(
         }
 
         customAttributes.recycle()
-
-        setupForLiveData()
     }
 
     /**
@@ -195,10 +192,12 @@ class ProgressButton @JvmOverloads constructor(
     fun setOnClickListener(listener: () -> Unit) {
         cardView.setOnClickListener {
             if (isVibrationEnabled) {
-                if ((ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.VIBRATE
-                    ) == PackageManager.PERMISSION_GRANTED)
+                if ((
+                    ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.VIBRATE
+                        ) == PackageManager.PERMISSION_GRANTED
+                    )
                 ) {
                     vibrateOnClick()
                 } else {
@@ -259,6 +258,7 @@ class ProgressButton @JvmOverloads constructor(
      */
     fun setFinishedText(text: String) {
         finishText = text
+        setTextWithRespectToState()
     }
 
     /**
@@ -326,6 +326,15 @@ class ProgressButton @JvmOverloads constructor(
      */
     fun setDefaultText(text: String) {
         defaultText = text
+        setTextWithRespectToState()
+    }
+
+    private fun setTextWithRespectToState() {
+        if (currentState == ButtonStates.ENABLED || currentState == ButtonStates.DISABLED) {
+            setBtnText(defaultText)
+        } else if (currentState == ButtonStates.LOADING) {
+            setBtnText(finishText)
+        }
     }
 
     /**
@@ -344,7 +353,6 @@ class ProgressButton @JvmOverloads constructor(
         if (vibrator == null)
             vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator?.vibrate(
                 VibrationEffect.createOneShot(
@@ -362,13 +370,14 @@ class ProgressButton @JvmOverloads constructor(
      * Enable button
      */
     fun enable() {
+        currentState = ButtonStates.ENABLED
         for (editText in disableViews) {
             editText.isEnabled = true
         }
         cardView.setCardBackgroundColor(
             defaultColor
         )
-        textView.text = defaultText
+        setBtnText(defaultText)
         cardView.isEnabled = true
         progressBar.gone()
         textView.visible()
@@ -378,10 +387,11 @@ class ProgressButton @JvmOverloads constructor(
      * Disable button
      */
     fun disable() {
+        currentState = ButtonStates.DISABLED
         cardView.setCardBackgroundColor(
             disabledColor
         )
-        textView.text = defaultText
+        setBtnText(defaultText)
         cardView.isEnabled = false
         progressBar.gone()
         textView.visible()
@@ -398,6 +408,7 @@ class ProgressButton @JvmOverloads constructor(
      * Set the button state to activate for loading purpose
      */
     fun activate() {
+        currentState = ButtonStates.LOADING
         for (editText in disableViews) {
             editText.isEnabled = false
         }
@@ -415,6 +426,7 @@ class ProgressButton @JvmOverloads constructor(
      * Set the button state to finished - when task is completed
      */
     fun finished() {
+        currentState = ButtonStates.FINISHED
         for (editText in disableViews) {
             editText.isEnabled = true
         }
@@ -423,7 +435,7 @@ class ProgressButton @JvmOverloads constructor(
         cardView.setCardBackgroundColor(
             finishedColor
         )
-        textView.text = finishText
+        setBtnText(finishText)
         textView.visible()
         progressBar.gone()
     }
@@ -432,6 +444,7 @@ class ProgressButton @JvmOverloads constructor(
      * Reset the button state
      */
     fun reset() {
+        currentState = ButtonStates.ENABLED
         for (editText in disableViews) {
             editText.isEnabled = true
         }
@@ -439,7 +452,7 @@ class ProgressButton @JvmOverloads constructor(
         cardView.setCardBackgroundColor(
             defaultColor
         )
-        textView.text = defaultText
+        setBtnText(defaultText)
         textView.visible()
         progressBar.gone()
     }
@@ -462,13 +475,15 @@ class ProgressButton @JvmOverloads constructor(
         )
     }
 
-
     /**
-     * This function does the initial setup of livedata and its observer
+     * Attach livedata to the button to directly observe changes in button states .
+     * Helps when u have a livedata in your viewModel and you want to update button state
+     * according to the livedata
      */
-    private fun setupForLiveData() {
-        buttonStatesLiveData = null
-        buttonStateObserver = Observer<ButtonStates> {
+
+    fun attachToLiveData(state: LiveData<ButtonStates>, lifecycleOwner: LifecycleOwner) {
+        buttonStatesLiveData = state
+        buttonStatesLiveData?.observe(lifecycleOwner) {
             when (it) {
                 ButtonStates.LOADING -> activate()
                 ButtonStates.ENABLED -> enable()
@@ -477,35 +492,5 @@ class ProgressButton @JvmOverloads constructor(
                 else -> reset()
             }
         }
-
     }
-
-    /**
-     * Attach livedata to the button to directly observe changes in button states .
-     * Helps when u have a livedata in your viewModel and you want to update button state
-     * according to the livedata
-     */
-
-    fun attachToLiveData(state: LiveData<ButtonStates>) {
-        buttonStatesLiveData = state
-        buttonStatesLiveData?.observeForever(buttonStateObserver)
-    }
-
-    /**
-     * Detach the livedata attached to the button
-     */
-
-    fun detachFromLiveData() {
-        buttonStatesLiveData?.removeObserver(buttonStateObserver)
-        buttonStatesLiveData = null
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
-        //remove the observer as soon as the view is destroyed to avoid memory leaks
-        detachFromLiveData()
-    }
-
-
 }
