@@ -2,6 +2,7 @@ package dev.sagar.progress_button_compose
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
@@ -32,7 +33,7 @@ fun ProgressButton(
     text: String,
     completedText: String,
     modifier: Modifier = Modifier,
-    shape: Shape,
+    shape: Shape = RoundedCornerShape(4.dp),
     progressBarStrokeWidth: Dp = 3.dp,
     progressButtonColors: ProgressButtonColors,
     progressButtonElevation: ProgressButtonElevation = ProgressButtonElevation(),
