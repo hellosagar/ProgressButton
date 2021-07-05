@@ -56,7 +56,7 @@ dependencies {
 
 ## 💻 Usage
 
-In XMl you need to define the button with your parameters to acheive the desired the design
+In XMl you need to define the button with your parameters to achieve the desired the design
 
 #### Notes -  
 * To use vibration on click please add the following permission in android manifest
@@ -201,6 +201,88 @@ Just post the button state to the livedata like
 `livedata.postValue(ButtonStates.LOADING)` and button will change to loading state automatically
 
 🌟 You are all set!
+
+
+## Jetpack Compose 
+
+If you are using Jetpack Compose, all you have to do it to call the ProgressButton composable
+
+### Composable function 
+```kotlin
+
+@Composable
+fun ProgressButton(
+    buttonState: ButtonState,
+    text: String,
+    completedText: String,
+    modifier: Modifier = Modifier,
+    shape: Shape = RoundedCornerShape(4.dp),
+    progressBarStrokeWidth: Dp = 3.dp,
+    progressButtonColors: ProgressButtonColors = ProgressButtonColors(),
+    progressButtonElevation: ProgressButtonElevation = ProgressButtonElevation(),
+    textStyle: TextStyle = defaultTextStyle,
+    onClick: () -> Unit
+)
+
+```
+
+### Parameters
+| Explanation  | Paramter name  | Type  | Default value |
+|------|------|------|------|
+| Current state of button           | buttonState  | ButtonState   | none   |
+| Text shown in button              | text         | String        | none   |
+| Text shown in completed State     | text         | String        | none   |
+| Modifier for button               | modifier     | Modifier      | Modifier   |
+| Shape of button                   | shape        | Shape         | RoundedCornerShape with 4dp radius   |
+| Stroke width of the progress bar inside button          | progressBarStrokeWidth  | Dp   | 3.dp   |
+| Colors used in button           | progressButtonColors  | ProgressButtonColors   | ProgressButtonColors()   |
+| Elevation used in button states           | progressButtonElevation  | ProgressButtonElevation   | ProgressButtonElevation()   |
+| Text Style of text inside button           | textStyle  | TextStyle   | TextStyle(color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)   |
+| Lambda function to be called on button press           | onClick  | () -> Unit   | none   |
+
+### Helper Classes
+```kotlin
+
+//This class holds data of the colors used in button
+data class ProgressButtonColors(
+    val backgroundColor: Color = DEFAULT_COLOR, //#0052FE
+    val disabledColor: Color = DISABLED_COLOR,  //#537CD3
+    val finishedColor: Color = FINISHED_COLOR,  //#27AE60
+    val contentColor: Color = CONTENT_COLOR     //#FFFFFF
+)
+
+
+//This class holds data for the elevation used in button 
+data class ProgressButtonElevation(
+    val defaultElevation: Dp = DEFAULT_ELEVATION,              //8dp
+    val elevationOnPress: Dp = DEFAULT_ELEVATION_ON_PRESS      //12dp
+)
+
+```
+
+
+### Sample code
+```kotlin
+
+fun MainScreenContent() {
+
+    //mutable State to holf button state
+    var buttonState by remember {
+        mutableStateOf(ButtonState.DISABLED)
+    }
+    ProgressButton(
+        buttonState = buttonState,
+        text = "Button",
+        completedText = "Finished",
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+
+    }
+    
+}
+
+```
 
 ## 🍰  Contribute  
 

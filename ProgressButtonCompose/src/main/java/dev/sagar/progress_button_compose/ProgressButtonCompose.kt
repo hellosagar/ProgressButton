@@ -35,7 +35,7 @@ fun ProgressButton(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(4.dp),
     progressBarStrokeWidth: Dp = 3.dp,
-    progressButtonColors: ProgressButtonColors,
+    progressButtonColors: ProgressButtonColors = ProgressButtonColors(),
     progressButtonElevation: ProgressButtonElevation = ProgressButtonElevation(),
     textStyle: TextStyle = defaultTextStyle,
     onClick: () -> Unit
