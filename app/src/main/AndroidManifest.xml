@@ -18,6 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <activity
+            android:name=".ComposeActivity"
+            android:exported="true"
+            android:label="@string/title_activity_compose"
+            android:theme="@style/Theme.ProgressButton.NoActionBar" />
     </application>
 
 </manifest>

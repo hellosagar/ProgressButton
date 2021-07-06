@@ -1,3 +1,4 @@
 rootProject.name = "ProgressButton"
 include ':app'
 include ':progress-button'
+include ':progress-button-compose'
