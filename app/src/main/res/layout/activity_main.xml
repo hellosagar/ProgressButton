@@ -92,4 +92,17 @@
         app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/switchToCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="?attr/colorSecondary"
+        android:paddingHorizontal="16dp"
+        android:text="Switch To Compose Activity"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
