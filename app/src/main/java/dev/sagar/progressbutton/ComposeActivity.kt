@@ -83,5 +83,3 @@ fun ControlButton(text: String, onClick: () -> Unit) {
         Text(text = text, color = Color.White)
     }
 }
-
-

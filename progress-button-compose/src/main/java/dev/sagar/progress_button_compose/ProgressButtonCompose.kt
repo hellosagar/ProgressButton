@@ -77,6 +77,3 @@ fun ProgressButton(
         }
     }
 }
-
-
-
