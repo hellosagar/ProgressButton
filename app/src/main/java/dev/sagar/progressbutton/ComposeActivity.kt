@@ -31,7 +31,6 @@ class ComposeActivity : ComponentActivity() {
     }
 }
 
-
 @ExperimentalFoundationApi
 @Composable
 @Preview
@@ -56,9 +55,7 @@ fun MainScreenContent() {
             modifier = Modifier
                 .fillMaxWidth(),
             progressButtonColors = ProgressButtonColors()
-        ) {
-
-        }
+        ) { }
 
         Spacer(modifier = Modifier.height(100.dp))
 
@@ -78,10 +75,7 @@ fun MainScreenContent() {
             buttonState = ButtonState.FINISHED
         }
     }
-
-
 }
-
 
 @Composable
 fun ControlButton(text: String, onClick: () -> Unit) {
@@ -89,4 +83,5 @@ fun ControlButton(text: String, onClick: () -> Unit) {
         Text(text = text, color = Color.White)
     }
 }
+
 

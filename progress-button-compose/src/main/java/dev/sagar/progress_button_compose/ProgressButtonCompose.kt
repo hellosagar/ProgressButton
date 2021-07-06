@@ -14,7 +14,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-
 /**
  * @param buttonState Current State of Button. eg.LOADING, FINISHED
  * @param text Text shown on Button
@@ -79,57 +78,5 @@ fun ProgressButton(
     }
 }
 
-
-//@Preview
-//@Composable
-//fun ButtonLoadingPreview() {
-//    ProgressButton(
-//        buttonState = ButtonState.LOADING,
-//        text = "Login",
-//        completedText = "Success",
-//        modifier = Modifier.fillMaxWidth()
-//    ) {
-//
-//    }
-//}
-//
-//@Preview
-//@Composable
-//fun ButtonEnabledPreview() {
-//    ProgressButton(
-//        buttonState = ButtonState.ENABLED,
-//        text = "Login",
-//        completedText = "Success",
-//        modifier = Modifier.fillMaxWidth()
-//    ) {
-//
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun ButtonDisabledPreview() {
-//    ProgressButton(
-//        buttonState = ButtonState.DISABLED,
-//        text = "Login",
-//        completedText = "Success",
-//        modifier = Modifier.fillMaxWidth()
-//    ) {
-//
-//    }
-//}
-//
-//@Preview
-//@Composable
-//fun ButtonFinishedPreview() {
-//    ProgressButton(
-//        buttonState = ButtonState.FINISHED,
-//        text = "Login",
-//        completedText = "Success",
-//        modifier = Modifier.fillMaxWidth()
-//    ) {
-//
-//    }
-//}
 
 

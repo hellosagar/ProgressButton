@@ -180,6 +180,26 @@ class MainActivity : AppCompatActivity() {
 
 }
 ```
+You can also directly integrate livedata to your button. This will automatically change the state of button according to the livedata.
+
+```kotlin
+
+//This is an enum that contains all button states, use this for livedata
+enum class ButtonStates {
+    LOADING, ENABLED, DISABLED, FINISHED
+}
+
+//liveData variable
+val buttonState = MutableLiveData<ButtonStates>()
+
+//In Fragment or Activity
+binding.progressButton.attachToLiveData(buttonState)
+
+```
+
+Just post the button state to the livedata like
+`livedata.postValue(ButtonStates.LOADING)` and button will change to loading state automatically
+
 🌟 You are all set!
 
 ## 🍰  Contribute  
