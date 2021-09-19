@@ -18,12 +18,12 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
 
     <Button
-        android:id="@+id/btnActivate"
+        android:id="@+id/btnLoading"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
-        android:text="Activate"
+        android:text="Loading"
         app:layout_constraintBottom_toTopOf="@+id/btnEnable"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -32,7 +32,7 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="Finish"
-        app:layout_constraintBottom_toBottomOf="@+id/btnActivate"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLoading"
         app:layout_constraintEnd_toEndOf="@+id/btnDisable" />
 
     <Button
@@ -43,7 +43,7 @@
         android:layout_marginBottom="24dp"
         android:text="Enable"
         app:layout_constraintBottom_toTopOf="@+id/btnReset"
-        app:layout_constraintEnd_toEndOf="@+id/btnActivate"
+        app:layout_constraintEnd_toEndOf="@+id/btnLoading"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button

@@ -151,9 +151,9 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this@MainActivity, "On click!", Toast.LENGTH_SHORT).show()
         }
 
-        btnActivate.setOnClickListener {
-            // Activate state
-            progressButton.activate()
+        btnLoading.setOnClickListener {
+            // Loading state
+            progressButton.loading()
         }
 
         btnFinish.setOnClickListener {

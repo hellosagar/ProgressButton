@@ -194,9 +194,9 @@ class ProgressButton @JvmOverloads constructor(
             if (isVibrationEnabled) {
                 if ((
                     ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.VIBRATE
-                    ) == PackageManager.PERMISSION_GRANTED
+                            context,
+                            Manifest.permission.VIBRATE
+                        ) == PackageManager.PERMISSION_GRANTED
                     )
                 ) {
                     vibrateOnClick()
@@ -405,9 +405,9 @@ class ProgressButton @JvmOverloads constructor(
     }
 
     /**
-     * Set the button state to activate for loading purpose
+     * Set the button state to loading for loading purpose
      */
-    fun activate() {
+    fun loading() {
         currentState = ButtonStates.LOADING
         for (editText in disableViews) {
             editText.isEnabled = false
@@ -480,17 +480,29 @@ class ProgressButton @JvmOverloads constructor(
      * Helps when u have a livedata in your viewModel and you want to update button state
      * according to the livedata
      */
-
     fun attachToLiveData(state: LiveData<ButtonStates>, lifecycleOwner: LifecycleOwner) {
         buttonStatesLiveData = state
         buttonStatesLiveData?.observe(lifecycleOwner) {
             when (it) {
-                ButtonStates.LOADING -> activate()
+                ButtonStates.LOADING -> loading()
                 ButtonStates.ENABLED -> enable()
                 ButtonStates.DISABLED -> disable()
                 ButtonStates.FINISHED -> finished()
                 else -> reset()
             }
+        }
+    }
+
+    /**
+     * Added the enum support to change the Button state using [ButtonStates] enum
+     */
+    fun setState(state: ButtonStates) {
+        when (state) {
+            ButtonStates.LOADING -> loading()
+            ButtonStates.ENABLED -> enable()
+            ButtonStates.DISABLED -> disable()
+            ButtonStates.FINISHED -> finished()
+            else -> reset()
         }
     }
 }
