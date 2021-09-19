@@ -194,9 +194,9 @@ class ProgressButton @JvmOverloads constructor(
             if (isVibrationEnabled) {
                 if ((
                     ContextCompat.checkSelfPermission(
-                            context,
-                            Manifest.permission.VIBRATE
-                        ) == PackageManager.PERMISSION_GRANTED
+                        context,
+                        Manifest.permission.VIBRATE
+                    ) == PackageManager.PERMISSION_GRANTED
                     )
                 ) {
                     vibrateOnClick()
