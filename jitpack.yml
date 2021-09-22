@@ -1,4 +1,4 @@
 jdk:
   - openjdk11
 install:
-  - ./gradlew build :app:publishToMavenLocal
+  - ./gradlew build :progress-button:publishToMavenLocal
