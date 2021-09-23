@@ -25,11 +25,10 @@
     <a href="https://github.com/hellosagar/ProgressButton/issues/new/choose">Request Feature</a>
 </p>
 
-
 ### Need easy way to refelect all the button states?
 Progress Button  is a android library for hanling different types state like active, finished, enabled, disabled and reset with a single line of code.
 
-## 🚀 Demo
+## 🚀 Demo [![jitPack](https://jitpack.io/v/hellosagar/ProgressButton.svg)](https://jitpack.io/#hellosagar/ProgressButton)
 
 ![progress button example](https://raw.githubusercontent.com/hellosagar/ProgressButton/master/gif/demo.gif)
 
