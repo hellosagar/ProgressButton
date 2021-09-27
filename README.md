@@ -4,6 +4,9 @@
 <a href="https://github.com/hellosagar/ProgressButton/blob/master/LICENSE" target="blank">
 <img src="https://img.shields.io/github/license/hellosagar/ProgressButton?style=flat-square" alt="ProgressButton licence" />
 </a>
+<a href = "https://jitpack.io/#hellosagar/ProgressButton" target="blank">
+<img src = "https://jitpack.io/v/hellosagar/ProgressButton.svg" alt = "progress-button-version"/>
+</a>
 <a href="https://github.com/hellosagar/ProgressButton/fork" target="blank">
 <img src="https://img.shields.io/github/forks/hellosagar/ProgressButton?style=flat-square" alt="ProgressButton forks"/>
 </a>
@@ -16,7 +19,6 @@
 <a href="https://github.com/hellosagar/ProgressButton/pulls" target="blank">
 <img src="https://img.shields.io/github/issues-pr/hellosagar/ProgressButton?style=flat-square" alt="ProgressButton pull-requests"/>
 </a>
-
 </p>
 
 <p align="center">
@@ -28,7 +30,7 @@
 ### Need easy way to refelect all the button states?
 Progress Button  is a android library for hanling different types state like active, finished, enabled, disabled and reset with a single line of code.
 
-## 🚀 Demo [![jitPack](https://jitpack.io/v/hellosagar/ProgressButton.svg)](https://jitpack.io/#hellosagar/ProgressButton)
+## 🚀 Demo
 
 ![progress button example](https://raw.githubusercontent.com/hellosagar/ProgressButton/master/gif/demo.gif)
 
@@ -49,7 +51,7 @@ repositories {
 }  
   
 dependencies {  
- implementation 'com.github.hellosagar:ProgressButton:0.32'
+ implementation 'com.github.hellosagar:ProgressButton:latest_version'
 }  
 ```
 
