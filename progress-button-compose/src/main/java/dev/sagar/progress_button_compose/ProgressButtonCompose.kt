@@ -1,5 +1,8 @@
 package dev.sagar.progress_button_compose
 
+import android.content.Context.VIBRATOR_SERVICE
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -46,12 +50,16 @@ fun ProgressButton(
         ButtonState.DISABLED -> progressButtonColors.disabledColor
         ButtonState.FINISHED -> progressButtonColors.finishedColor
     }
+    val vibrator = LocalContext.current.getSystemService(VIBRATOR_SERVICE) as Vibrator
     val isEnabled = buttonState == ButtonState.ENABLED
     val btnColorDisabled =
         if (buttonState == ButtonState.FINISHED) progressButtonColors.finishedColor
         else progressButtonColors.disabledColor
     Button(
-        onClick = onClick,
+        onClick = {
+            onClick()
+            vibrator.vibrate(VibrationEffect.createOneShot(70L, VibrationEffect.DEFAULT_AMPLITUDE))
+        },
         modifier = modifier,
         enabled = isEnabled,
         shape = shape,
