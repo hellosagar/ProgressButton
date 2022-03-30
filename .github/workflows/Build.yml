@@ -20,7 +20,7 @@ jobs:
 
       # Cache gradle
       - name: Cache Gradle and wrapper
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: |
             ~/.gradle/caches
