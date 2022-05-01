@@ -28,7 +28,7 @@
 </p>
 
 ### Need easy way to refelect all the button states?
-Progress Button  is a android library for hanling different types state like active, finished, enabled, disabled and reset with a single line of code.
+Progress Button is an android library for handling different types states like active, finished, enabled, disabled, and reset with a single line of code.
 
 ## 🚀 Demo
 
