@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">ProgressButton</string>
     <string name="title_activity_compose">ComposeActivity</string>
+    <string name="finished">Finished</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="loading">Loading</string>
+    <string name="button">Button</string>
+    <string name="click">On click!</string>
+    <string name="reset">Reset</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="switch_to_compose_activity">Switch To Compose Activity</string>
 </resources>

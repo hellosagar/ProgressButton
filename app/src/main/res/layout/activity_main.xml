@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
-        android:text="Loading"
+        android:text="@string/loading"
         app:layout_constraintBottom_toTopOf="@+id/btnEnable"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -31,7 +31,7 @@
         android:id="@+id/btnFinish"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:text="Finish"
+        android:text="@string/finished"
         app:layout_constraintBottom_toBottomOf="@+id/btnLoading"
         app:layout_constraintEnd_toEndOf="@+id/btnDisable" />
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
-        android:text="Enable"
+        android:text="@string/enable"
         app:layout_constraintBottom_toTopOf="@+id/btnReset"
         app:layout_constraintEnd_toEndOf="@+id/btnLoading"
         app:layout_constraintStart_toStartOf="parent" />
@@ -51,7 +51,7 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="Disable"
+        android:text="@string/disable"
         app:layout_constraintBottom_toBottomOf="@+id/btnEnable"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -60,7 +60,7 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:text="Reset"
+        android:text="@string/reset"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -73,7 +73,7 @@
         android:layout_marginTop="200dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
-        android:hint="Email Address"
+        android:hint="@string/email_address"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
         app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
@@ -99,7 +99,7 @@
         android:layout_marginTop="32dp"
         android:background="?attr/colorSecondary"
         android:paddingHorizontal="16dp"
-        android:text="Switch To Compose Activity"
+        android:text="@string/switch_to_compose_activity"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
