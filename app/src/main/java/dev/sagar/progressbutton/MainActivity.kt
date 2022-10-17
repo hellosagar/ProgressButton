@@ -16,13 +16,13 @@ class MainActivity : AppCompatActivity() {
 
     private val sampleLiveData: LiveData<ButtonStates> = liveData(Dispatchers.IO) {
         emit(ButtonStates.DISABLED)
-        delay(5000L)
+        delay(DELAY_TIME)
         emit(ButtonStates.ENABLED)
-        delay(5000L)
+        delay(DELAY_TIME)
         emit(ButtonStates.LOADING)
-        delay(5000L)
+        delay(DELAY_TIME)
         emit(ButtonStates.FINISHED)
-        delay(5000L)
+        delay(DELAY_TIME)
         emit(ButtonStates.ENABLED)
     }
 
@@ -83,5 +83,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         progressButton.attachToLiveData(sampleLiveData, this@MainActivity)
+    }
+
+    companion object {
+        const val DELAY_TIME = 5000L
     }
 }

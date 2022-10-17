@@ -13,6 +13,7 @@ import androidx.compose.runtime.* // ktlint-disable no-wildcard-imports
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.sagar.progress_button_compose.ButtonState
@@ -49,8 +50,8 @@ fun MainScreenContent() {
     ) {
         ProgressButton(
             buttonState = buttonState,
-            text = "Button",
-            completedText = "Finished",
+            text = stringResource(R.string.button),
+            completedText = stringResource(R.string.finished),
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth(),
@@ -59,19 +60,19 @@ fun MainScreenContent() {
 
         Spacer(modifier = Modifier.height(100.dp))
 
-        ControlButton(text = "Enable") {
+        ControlButton(text = stringResource(R.string.enable)) {
             buttonState = ButtonState.ENABLED
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ControlButton(text = "Disable") {
+        ControlButton(text = stringResource(R.string.disable)) {
             buttonState = ButtonState.DISABLED
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ControlButton(text = "Loading") {
+        ControlButton(text = stringResource(R.string.loading)) {
             buttonState = ButtonState.LOADING
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ControlButton(text = "Finished") {
+        ControlButton(text = stringResource(R.string.finished)) {
             buttonState = ButtonState.FINISHED
         }
     }

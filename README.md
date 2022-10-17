@@ -32,8 +32,9 @@ Progress Button is an android library for handling different types states like a
 
 ## 🚀 Demo
 
-![progress button example](https://raw.githubusercontent.com/hellosagar/ProgressButton/master/gif/demo.gif)
-
+<p align="left">
+<img src="https://raw.githubusercontent.com/hellosagar/ProgressButton/master/gif/demo.gif" width="32%"/>
+</p>
 
 ## 🧐 Features
 
