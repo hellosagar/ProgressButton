@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private fun initClickListeners() = binding.apply {
 
         progressButton.setOnClickListener {
-            Toast.makeText(this@MainActivity, "On click!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, getString(R.string.click), Toast.LENGTH_SHORT).show()
         }
 
         btnLoading.setOnClickListener {
